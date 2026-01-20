@@ -7,6 +7,8 @@ import {
   BeforeInsert,
   ManyToOne,
   PrimaryGeneratedColumn,
+  JoinColumn,
+  type Relation,
 } from "typeorm";
 import { User } from "./user.model.js";
 export enum ComplaintType {
@@ -55,7 +57,11 @@ export class Complaint {
   statusUpdatedAt!: Date;
 
   @ManyToOne(() => User, (user) => user.complaints)
-  user!: User;
+  @JoinColumn({ name: "userId" })
+  user!: Relation<User>;
+
+  @Column()
+  userId!: string;
 
   @BeforeInsert()
   setInitialStatusUpdatedAt() {
